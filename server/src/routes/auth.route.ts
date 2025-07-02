@@ -12,14 +12,23 @@ router.get(
   passport.authenticate('google', { session: false, failureRedirect: '/' }),
   (req, res) => {
     const user = req.user as any;
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
+    const token = jwt.sign(
+      { 
+        id: user._id 
+      }, process.env.JWT_SECRET!, 
+      {
       expiresIn: '1d',
     });
 
-    res.json({
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24*60*60*1000, // 1 day
+    })    
+
+    res.status(200).json({
       message: 'Google login successful!',
-      token,
       user,
     });
   }

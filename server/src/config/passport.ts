@@ -23,7 +23,9 @@ passport.use
       done: (error: any, user?: Express.User | false | null) => void
     ) => {
       try {
-        let user = await UserModel.findOne({ googleID: profile.id });
+        let user = await UserModel.findOne({ 
+          email: profile.emails?.[0].value 
+        });
 
         if (!user) {
           user = await UserModel.create({
