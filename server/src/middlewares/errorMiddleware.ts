@@ -1,13 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import ApiError from '../utils/ApiError';
+import { ApiError } from '../utils/ApiError';
 
-export const errorMiddleware = (err: ApiError, req: Request, res: Response, next: NextFunction) => {
+export const errorMiddleware = (
+  err: ApiError,
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   const statusCode = err.statusCode || 500;
-  const message = err.message || 'Internal Server Error';
-
-  return res.status(statusCode).json({
-    message,
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
-    ...(err.errors && err.errors.length > 0 && { errors: err.errors }),
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    errors: err.errors || [],
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
 };

@@ -3,9 +3,11 @@ import express from 'express';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import googleRoutes from './routes/auth/google.route';
+import emailRoutes from './routes/auth/email.route'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import './config/passport';
+import { errorMiddleware } from './middlewares/errorMiddleware';
 
 dotenv.config();
 
@@ -22,8 +24,11 @@ app.use(
 );
 app.use(passport.initialize());
 
-app.use('/api/v1/auth/google', googleRoutes);
-app.use('api/v1/auth/email')
+app.use('/api/v1/auth/', googleRoutes);
+app.use('api/v1/auth/email', emailRoutes);
+
+
+app.use(errorMiddleware);
 
 ConnectDB()
   .then(() => {
