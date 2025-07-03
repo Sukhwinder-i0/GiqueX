@@ -1,6 +1,6 @@
 class ApiResponse<T> {
   statusCode: number;
-  data: T;
+  data?: T;
   message: string;
   success: boolean;
 

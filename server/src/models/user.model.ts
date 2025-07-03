@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 
 export interface UserDocument extends Document {
   name: string;
@@ -22,18 +22,31 @@ const userSchema = new mongoose.Schema(
     googleId: String,
     avatar: String,
     password: String,
-    isVerified: {type: Boolean, default: false} ,
+    isVerified: { type: Boolean, default: false },
     otp: {
       code: String,
-      expiresAt: Date
-    }
+      expiresAt: Date,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-userSchema.methods.comparePassword = async function (candidatePAssword: string) {
-  return await bcrypt.compare(candidatePAssword, this.password)
-}
+//  Pre-save hook to hash password if modified
+userSchema.pre<UserDocument>('save', async function (next) {
+  if (!this.isModified('password') || !this.password) return next();
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    return next();
+  } catch (err) {
+    return next(err as any);
+  }
+});
+
+userSchema.methods.comparePassword = async function (candidatePassword: string) {
+  if (!this.password) return false;
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 export const UserModel = mongoose.model<UserDocument>('User', userSchema);
-
