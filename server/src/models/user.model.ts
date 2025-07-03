@@ -12,24 +12,41 @@ export interface UserDocument extends Document {
     code: string;
     expiresAt: Date;
   };
+  userType: string,
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema(
   {
     name: String,
-    email: { type: String, unique: true, required: true },
+    email: { 
+      type: String, 
+      unique: true, 
+      required: true 
+    },
+
     googleId: String,
     avatar: String,
     password: String,
-    isVerified: { type: Boolean, default: false },
+
+    isVerified: { 
+      type: Boolean, 
+      default: false 
+    },
     otp: {
       code: String,
       expiresAt: Date,
     },
+    userType: {
+      type: String,
+      default: 'buyer'
+    },
   },
+
+
   { timestamps: true }
 );
+
 
 //  Pre-save hook to hash password if modified
 userSchema.pre<UserDocument>('save', async function (next) {
