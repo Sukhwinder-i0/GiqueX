@@ -10,6 +10,7 @@ import './config/passport';
 import { errorMiddleware } from './middlewares/errorMiddleware';
 import { requireAuth } from './middlewares/requireAuth';
 import userRoutes from './routes/user/userProfile.route'
+import gigsRoutes from './routes/gigs/gigs.routes'
 
 dotenv.config();
 
@@ -27,9 +28,10 @@ app.use(
 );
 app.use(passport.initialize());
 
-app.use('/api/v1/auth/', googleRoutes);
+app.use('/api/v1/auth', googleRoutes);
 app.use('/api/v1/auth/email', emailRoutes);
 app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/user/gigs', gigsRoutes)
 
 
 app.use(errorMiddleware);
