@@ -62,6 +62,8 @@ export const verifyUserOtp = asyncHandler(async (req: Request, res: Response) =>
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
+  if(!email || !password) throw new ApiError(403, 'all fileds are required')
+
   const user = await UserModel.findOne({ email });
   if (!user) throw new ApiError(401, 'user does not exist with this email');
 
