@@ -10,10 +10,11 @@ import { generateJWT } from '../utils/generateJWT';
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
+  if(!name || !email || !password) throw new ApiError(403, 'all fileds are required')
+
   const existingUser = await UserModel.findOne({ email });
-  if (existingUser) {
-    throw new ApiError(401, 'User already exists');
-  }
+
+  if (existingUser) throw new ApiError(401, 'User already exists');
 
   const user = await UserModel.create({ name, email, password });
 
@@ -37,6 +38,8 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
 export const verifyUserOtp = asyncHandler(async (req: Request, res: Response) => {
   const { email, otp } = req.body;
+
+  if(!otp) throw new ApiError(401,"provide required otp")
 
   const user = await UserModel.findOne({ email });
   if (!user) throw new ApiError(404, 'User not found');
@@ -74,6 +77,8 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const token = generateJWT({ id: user._id as string});
+
+  if(!token) throw new ApiError(403, 'error while genetrating jwt')
 
   res.status(200).json(
     new ApiResponse(200, {
