@@ -64,7 +64,7 @@ export const updateGig = asyncHandler(async (req: AuthRequest, res: Response) =>
 
   const updates: Partial<typeof gig> = {}; // for any values
 
-  if (title) gig.title = updates.title 
+  if (title) updates.title  = title
   if (description) updates.description = description;
   if (price) updates.price = price;
   if (category) updates.category = category

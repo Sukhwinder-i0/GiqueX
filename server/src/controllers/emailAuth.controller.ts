@@ -96,5 +96,3 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     }, 'Login successful')
   );
 });
-
-
