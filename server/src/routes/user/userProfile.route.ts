@@ -1,24 +1,13 @@
 import express from 'express';
 import { requireAuth } from '../../middlewares/requireAuth';
-import { UserModel } from '../../models/user.model';
+import { getUser, switchToSeller } from '../../controllers/user.controller';
+
 
 const router = express.Router();
 
-import { Request, Response, NextFunction } from 'express';
+router.get('/me', requireAuth, getUser);
 
-router.get('/me', requireAuth, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    // @ts-ignore
-    const user = await UserModel.findById(req.userId).select('-password -id -isVerified');
-    if (!user) {
-      res.status(404).json({ message: 'User not found' });
-      return;
-    }
-    console.log(user)
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
+router.patch('/switch-role', requireAuth, switchToSeller);
+
 
 export default router;

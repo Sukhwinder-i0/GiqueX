@@ -12,7 +12,7 @@ export interface UserDocument extends Document {
     code: string;
     expiresAt: Date;
   };
-  userType: string,
+  role: string,
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -37,10 +37,12 @@ const userSchema = new mongoose.Schema(
       code: String,
       expiresAt: Date,
     },
-    userType: {
+    role: {
       type: String,
-      default: 'buyer'
-    },
+      enum: ['buyer', 'seller'],
+      default: 'buyer',
+    }
+
   },
 
 
