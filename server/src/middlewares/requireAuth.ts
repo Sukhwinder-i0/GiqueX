@@ -17,10 +17,12 @@ export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction)
       process.env.JWT_SECRET!
     ) as { 
       id: string,  
-      role: 'buyer' | 'buyer'
+      role: 'seller' | 'buyer'
     };
     req.userId = decoded.id;
     req.userRole = decoded.role;
+
+    console.log(decoded.role)
     
     next();
   } catch {

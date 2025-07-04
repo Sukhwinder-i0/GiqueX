@@ -26,6 +26,8 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   user.role = 'seller';
   await user.save();
 
+  // console.log(user.role)
+
   res.status(200).json({
     success: true,
     message: 'You have switched to a seller account',
