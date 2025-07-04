@@ -32,7 +32,7 @@ app.use('/api/v1/auth', googleRoutes);
 app.use('/api/v1/auth/email', emailRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/user/gigs', gigsRoutes);
-app.use('api/v1/user/order', orderRoutes)
+app.use('/api/v1/user/orders', orderRoutes)
 
 app.use(errorMiddleware);
 
