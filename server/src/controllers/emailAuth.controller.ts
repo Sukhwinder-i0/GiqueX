@@ -82,7 +82,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   if(!token) throw new ApiError(403, 'error while genetrating jwt')
 
-  localStorage.setItem('token', token)
+  // localStorage.setItem('token', token)
   
   res.status(200).json(
     new ApiResponse(200, {
