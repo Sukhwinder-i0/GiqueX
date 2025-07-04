@@ -3,21 +3,21 @@ import express from 'express';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import googleRoutes from './routes/auth/google.route';
-import emailRoutes from './routes/auth/email.route'
+import emailRoutes from './routes/auth/email.route';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import './config/passport';
 import { errorMiddleware } from './middlewares/errorMiddleware';
-import { requireAuth } from './middlewares/requireAuth';
-import userRoutes from './routes/user/userProfile.route'
-import gigsRoutes from './routes/gigs/gigs.routes'
+import userRoutes from './routes/user.route';
+import gigsRoutes from './routes/gigs.routes';
+import orderRoutes from './routes/order.routes'
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 app.use(cookieParser());
 
 app.use(
@@ -30,9 +30,9 @@ app.use(passport.initialize());
 
 app.use('/api/v1/auth', googleRoutes);
 app.use('/api/v1/auth/email', emailRoutes);
-app.use('/api/v1/user', userRoutes)
-app.use('/api/v1/user/gigs', gigsRoutes)
-
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/user/gigs', gigsRoutes);
+app.use('api/v1/user/order', orderRoutes)
 
 app.use(errorMiddleware);
 

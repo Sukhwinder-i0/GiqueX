@@ -3,7 +3,7 @@ import ApiError from '../utils/ApiError';
 import { AuthRequest } from './requireAuth';
 
 export const restrictTo =
-  (role: 'seller' | 'user') =>
+  (role: 'seller' | 'buyer') =>
   (req: AuthRequest, res: Response, next: NextFunction) => {
     if (req.userRole !== role) {
       return next(new ApiError(403, `Only ${role}s can access this route`));
