@@ -10,9 +10,12 @@ export const writeReview = asyncHandler (async(req: AuthRequest, res: Response) 
 
   const { gigId, rating, comment } = req.body;
 
+  console.log(gigId);
+  console.log(rating);
+
   if (!gigId || !rating) throw new ApiError(400, 'gigId and rating are required');
 
-  const gig = await gigsModel.findById({gigId});
+  const gig = await gigsModel.findById(gigId);
   if (!gig) throw new ApiError(404, 'Gig not found');
 
   const completedOrder = await ordersModel.findOne({
@@ -49,9 +52,10 @@ export const writeReview = asyncHandler (async(req: AuthRequest, res: Response) 
 export const getReviews = asyncHandler( async (req: AuthRequest, res: Response ) => {
   const { gigId } = req.params;
 
-  const reviews = reviewModel.find({ gig: gigId })
-                              .populate('buyer', 'name', 'avatar')
-                              .sort({ createdAt: -1 });
+  const reviews = await reviewModel.find({ gig: gigId })
+                              .populate('buyer', 'name avatar')
+                              .sort({ createdAt: -1 })
+                              .lean()
 
   res.status(200).json({
     success: true,
