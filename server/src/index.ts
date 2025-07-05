@@ -11,6 +11,7 @@ import { errorMiddleware } from './middlewares/errorMiddleware';
 import userRoutes from './routes/user.route';
 import gigsRoutes from './routes/gigs.routes';
 import orderRoutes from './routes/order.routes'
+import reviewsRoutes from './routes/review.routes'
 
 dotenv.config();
 
@@ -19,7 +20,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-
 app.use(
   cors({
     origin: 'http://localhost:3000',
@@ -28,11 +28,13 @@ app.use(
 );
 app.use(passport.initialize());
 
+
 app.use('/api/v1/auth', googleRoutes);
 app.use('/api/v1/auth/email', emailRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/user/gigs', gigsRoutes);
 app.use('/api/v1/user/orders', orderRoutes)
+app.use('/api/v1/reviews', reviewsRoutes)
 
 app.use(errorMiddleware);
 
