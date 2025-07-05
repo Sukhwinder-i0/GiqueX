@@ -77,6 +77,8 @@ export const getOrderById = asyncHandler(async (req: AuthRequest, res: Response)
 export const updateOrderStatus = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { status } = req.body;
 
+  console.log('called')
+
   if (!['in-progress', 'completed', 'pending'].includes(status)) {
     throw new ApiError(400, 'Invalid status value');
   }

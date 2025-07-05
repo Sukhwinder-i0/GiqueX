@@ -3,6 +3,7 @@ import { AuthRequest } from "../middlewares/requireAuth";
 import { asyncHandler } from "../utils/asyncHandler";
 import { UserModel } from "../models/user.model";
 import ApiError from "../utils/ApiError";
+import { generateJWT } from "../utils/generateJWT";
 
 export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
 
@@ -24,15 +25,28 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   else user.role = 'seller'
 
     //throw new ApiError(400, 'You are already a seller');
-
   
   await user.save();
 
+  const token = generateJWT({
+    id: user._id as string,
+    role: user.role,
+  });
+
+  // since i am updating the userROle but jwt contains prevoius role
   // console.log(user.role)
 
   res.status(200).json({
     success: true,
     message: `You have switched to ${user.role} account`,
-    data: { role: user.role },
+    data: {
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      token
+    }
   });
 });
