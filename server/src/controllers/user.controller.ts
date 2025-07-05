@@ -20,17 +20,19 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   const user = await UserModel.findById(req.userId);
   if (!user) throw new ApiError(404, 'User not found');
 
-  if (user.role === 'seller')
-    throw new ApiError(400, 'You are already a seller');
+  if (user.role === 'seller') user.role = 'buyer'
+  else user.role = 'seller'
 
-  user.role = 'seller';
+    //throw new ApiError(400, 'You are already a seller');
+
+  
   await user.save();
 
   // console.log(user.role)
 
   res.status(200).json({
     success: true,
-    message: 'You have switched to a seller account',
+    message: `You have switched to ${user.role} account`,
     data: { role: user.role },
   });
 });

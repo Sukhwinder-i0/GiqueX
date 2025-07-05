@@ -78,7 +78,10 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(401, 'Invalid password');
   }
 
-  const token = generateJWT({ id: user._id as string});
+  const token = generateJWT({ 
+    id: user._id as string,
+    role: user.role
+  });
 
   if(!token) throw new ApiError(403, 'error while genetrating jwt')
 

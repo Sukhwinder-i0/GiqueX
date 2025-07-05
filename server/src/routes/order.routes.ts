@@ -5,8 +5,7 @@ import { restrictTo } from '../middlewares/restrictTo';
 const router = express.Router();
 
 router.get('/', requireAuth, getMyOrders);
-router.get('/order', requireAuth, getOrderById)
-
+router.get('/getOrder', requireAuth, getOrderById)
 router.post('/create', requireAuth, restrictTo('buyer'), createOrder);
 router.put('/update-status', requireAuth, restrictTo('seller'), createOrder);
 
