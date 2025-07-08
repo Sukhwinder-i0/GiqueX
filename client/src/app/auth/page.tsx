@@ -4,7 +4,6 @@ import { useState } from "react";
 import Input from "@/components/ui/InputBox";
 import { Button } from "@/components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
-import { handleEmailLogin, handleGoogleLogin } from "@/lib/handleAuth";
 
 export default function Page () {
   const [name, setName] = useState("");
@@ -56,7 +55,7 @@ export default function Page () {
         <Button 
           text={login ? "Log In" : 'Sign Up'} 
           variant="login" 
-          onClick={() => handleEmailLogin}
+          // onClick={() => handleEmailLogin(email, password)}
         />
 
         <div className="flex items-center my-4 gap-2 text-gray-300 text-sm">
@@ -69,7 +68,7 @@ export default function Page () {
           text="continue with google"
           variant="google"
           startIcon={<FcGoogle />}
-          onClick={handleGoogleLogin}
+          // onClick={handleGoogleLogin}
         />
 
         <p className="text-sm text-center text-gray-300 mt-4">

@@ -33,7 +33,6 @@ export const Button = (props: ButtonProps) => {
     <span className={`
         ${variantStyles[props.variant]} 
         ${defaultStyles} 
-        ${sizeSyles[props.size]} 
         ${props.class}
         inline-flex items-center gap-2 cursor-pointer 
     `} 
