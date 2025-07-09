@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { LogIn, Menu, X } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { Button } from './ui/Button';
 
 export default function Navbar() {
