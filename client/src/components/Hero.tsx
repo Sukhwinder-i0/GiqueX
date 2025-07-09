@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   return (
-    <section className="flex flex-col items-center justify-center text-center px-6 py-24 md:py-32 relative z-10">
+    <section className="flex flex-col items-center justify-center text-center px-6 py-24 md:py-32 relative">
      
       <motion.h1
-        className="text-4xl md:text-6xl font-extrabold text-gray-400 tracking-tight"
+        className="text-4xl md:text-6xl font-extrabold text-gray-300 tracking-tight"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}

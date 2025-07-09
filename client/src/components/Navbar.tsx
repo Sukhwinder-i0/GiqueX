@@ -11,13 +11,13 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="mt-4 max-w-7xl mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/20 shadow-md rounded-md">
+      <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-10">
       
         <Link href="/" className="text-xl font-bold text-white tracking-wide">
           GiqueX
         </Link>
 
-        <nav className="hidden md:flex items-center justify-around gap-6 text-white text-sm font-medium w-[40%] relative left-40">
+        <nav className="hidden md:flex items-center justify-around gap-6 text-white text-sm font-medium w-[40%] ">
           <Link href="/">Home</Link>
           <Link href="/gigs">Gigs</Link>
           <Link href="/orders">Orders</Link>

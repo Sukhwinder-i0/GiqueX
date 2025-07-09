@@ -20,7 +20,7 @@ const CategoryNav = ()  => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-3 flex justify-center items-center bg-white/5 backdrop-blur-md  border-white/10 sticky top-0 z-30 shadow-sm rounded">
+    <div className="max-w-7xl mx-auto px-4 py-3 flex justify-center items-center bg-white/5 backdrop-blur-md  border-white/10 sticky top-12 shadow-sm rounded">
       <div
         ref={containerRef}
         className="flex items-center gap-2 whitespace-nowra"
