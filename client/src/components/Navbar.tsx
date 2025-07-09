@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { Button } from './ui/Button';
+import SearchBar from './ui/SearchBar';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Navbar() {
           <Link href="/gigs">Gigs</Link>
           <Link href="/orders">Orders</Link>
           <Link href="/profile">Profile</Link>
+          <SearchBar placeholder='Search talent' />
           {/* <Link href="/login" className="px-4 py-1 rounded-full border border-white/30 hover:bg-white/10 transition">
             Login
           </Link> */}
