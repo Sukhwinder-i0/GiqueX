@@ -30,7 +30,7 @@ const CategoryNav = ()  => {
             key={index}
             className="flex items-center gap-1 px-3 py-1 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer text-sm"
           >
-            {cat.icon && <span className="text-base">{cat.icon}</span>}
+            
             <span>{cat.name}</span>
           </div>
         ))}

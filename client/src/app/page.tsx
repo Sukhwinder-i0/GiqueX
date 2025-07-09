@@ -2,7 +2,7 @@ import BackgroundLayout from '@/components/BackgroundLayout'
 import HeroSection from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import CategoryNav from '@/components/ui/CategoryNav'
-import PopularCategories from '@/components/ui/PopularCategories'
+import GigsCard from '@/components/ui/GigsCard'
 import React from 'react'
 
 const page = () => {
@@ -12,6 +12,12 @@ const page = () => {
       <Navbar />
       <CategoryNav />
       <HeroSection />
+      <div className='w-full flex justify-around items-center'>
+      <GigsCard />
+      <GigsCard />
+      <GigsCard />
+      <GigsCard />
+      </div>
     </div>
     </BackgroundLayout>
   )
