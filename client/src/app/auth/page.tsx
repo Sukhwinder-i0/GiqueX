@@ -12,7 +12,7 @@ export default function Page () {
   const [login, setLogin] = useState(false);
 
   return (
-    <div className="min-h-screen bg-cover bg-center flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-8 bg-white/10 backdrop-blur-md border border-white/30 rounded-2xl text-white shadow-2xl">
         <h2 className="text-3xl font-semibold text-center mb-2">
           {login? 'Welcome back!' : 'Start with GiqueX'}
