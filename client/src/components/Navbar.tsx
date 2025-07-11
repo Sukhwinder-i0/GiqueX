@@ -13,7 +13,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-10">
+      <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md  z-10">
       
         <Link href="/" className="text-xl font-bold text-white tracking-wide">
           GiqueX
