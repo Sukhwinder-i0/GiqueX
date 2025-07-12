@@ -10,11 +10,7 @@ export default function SellerProfilePage() {
         
         <div className="relative">
           <div className="w-40 h-40 rounded-full border-4 border-white/20 overflow-hidden">
-            <img
-              src="https://i.pravatar.cc/300"
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
+
           </div>
         </div>
 
