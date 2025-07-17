@@ -34,10 +34,10 @@ const statusStyles = {
 
 export default function OrdersPage() {
   return (
-    <section className="min-h-screen px-6 py-12  text-white">
-      <h1 className="text-3xl font-bold mt-8 mb-8 text-center">Your Orders</h1>
+    <section className="min-h-screen px-6 py-12 bg-[#0f172a] text-white">
+      <h1 className="text-3xl font-bold mb-8 text-center">Your Orders</h1>
 
-      <div className="overflow-x-auto rounded-md bg-white/5 backdrop-blur-lg border border-white/10">
+      <div className="overflow-x-auto rounded-xl bg-white/5 backdrop-blur-lg border border-white/10">
         <table className="min-w-full table-auto">
           <thead className="text-white/70 text-sm border-b border-white/10">
             <tr className="text-left">
@@ -61,6 +61,8 @@ export default function OrdersPage() {
                 <td className="px-6 py-4">{order.date}</td>
                 <td className="px-6 py-4 font-semibold">{order.price}</td>
                 <td className="px-6 py-4 flex items-center gap-2">
+                  {statusStyles[order.status].icon}
+                  {statusStyles[order.status].label}
                 </td>
               </tr>
             ))}
