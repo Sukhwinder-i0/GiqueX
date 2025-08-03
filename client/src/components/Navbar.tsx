@@ -11,7 +11,7 @@ import { CgProfile } from "react-icons/cg";
 import { HiMenu } from "react-icons/hi";
 
 export default function Navbar() {
-  const [isSignin, setIsSignin] = useState(true);
+  const [isSignin ] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
