@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full fixed mx-auto px-4 md:px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-50">
+      <div className="w-full fixed mx-auto px-2 md:px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-50">
         <Link href="/" className="text-xl font-bold text-white">
           GiqueX
         </Link>
@@ -29,6 +29,25 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
+          
+
+          
+          <div className="hidden md:flex gap-4 items-center">
+            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
+            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
+            <Link href="/" className="text-white font-medium">
+              Home
+            </Link>
+            <Link href="/orders" className="text-white font-medium">
+              Orders
+            </Link>
+            <Link href="/gigs" className="text-white font-medium">
+              Gigs
+            </Link>
+
+            <Button variant="primary" text="Start Selling" size="sm" />
+          </div>
+
           {isSignin ? (
             <Button
               variant="primary"
@@ -54,28 +73,14 @@ export default function Navbar() {
             <HiMenu />
           </button>
 
-          {/* Desktop only: rest of the buttons */}
-          <div className="hidden md:flex gap-4 items-center">
-            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
-            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
-            <Button variant="primary" text="Start Selling" size="sm" />
-            <Link href="/" className="text-white font-medium">
-              Home
-            </Link>
-            <Link href="/orders" className="text-white font-medium">
-              Orders
-            </Link>
-            <Link href="/gigs" className="text-white font-medium">
-              Gigs
-            </Link>
-          </div>
         </div>
       </div>
 
       {/* Hamburger Modal for mobile */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex justify-end md:hidden">
+        <div className="fixed w-full inset-0 z-50 bg-black/40 flex justify-end md:hidden">
           <div className="w-64 bg-white/10 backdrop-blur-md h-full p-6 flex flex-col gap-6 border-l border-white/20 shadow-xl">
+            
             <button
               className="self-end text-white text-2xl mb-4"
               onClick={() => setIsOpen(false)}
@@ -83,14 +88,13 @@ export default function Navbar() {
             >
               ×
             </button>
-            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
-            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
-            <Button
+             <Button
               variant="primary"
               text="Start Selling"
               size="sm"
               className="w-full"
             />
+           
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
@@ -112,6 +116,9 @@ export default function Navbar() {
             >
               Gigs
             </Link>
+             <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
+            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
+           
           </div>
         </div>
       )}
