@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  },
+  // Add these configurations
+  distDir: '.next',
+  typescript: {
+    tsconfigPath: './tsconfig.json',
+  },
+  experimental: {
   }
 };
 
