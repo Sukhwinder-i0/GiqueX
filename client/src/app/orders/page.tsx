@@ -1,7 +1,6 @@
 'use client'
 
 import { FaCheckCircle, FaClock } from 'react-icons/fa'
-import { FcCancel } from 'react-icons/fc'
 import { MdCancel } from 'react-icons/md'
 
 type OrderStatus = 'completed' | 'in progress' | 'cancelled'
@@ -123,7 +122,7 @@ function OrderTable({ orders }: { orders: Order[] }) {
   )
 }
 
-export default function OrdersPage() {
+export default function Page() {
   return (
     <section className="min-h-screen px-6 py-20 text-white">
       <h1 className="text-3xl font-bold mb-8 text-center">Your Orders</h1>

@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { LogIn } from "lucide-react";
+import { LogIn, Router } from "lucide-react";
 import { Button } from "./ui/Button";
 import SearchBar from "./ui/SearchBar";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { IoMdNotifications } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { HiMenu } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const [isSignin ] = useState(true);
+  const [isSignin ] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -54,6 +56,7 @@ export default function Navbar() {
               size="md"
               startIcon={<CgProfile />}
               className="font-bold rounded-full border"
+              onClick={() => router.push('/profile')}
             />
           ) : (
             <Button
@@ -62,6 +65,7 @@ export default function Navbar() {
               size="md"
               startIcon={<LogIn size={16} strokeWidth={2.5} />}
               className="font-bold"
+              onClick={() => router.push('/signin')}
             />
           )}
 
