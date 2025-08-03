@@ -5,20 +5,18 @@ import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { Button } from './ui/Button';
 import SearchBar from './ui/SearchBar';
-import { useRouter } from 'next/navigation';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 import { IoMdNotifications } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter()
 
   return (
     <>
       <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-50">
       
-        <Link href="/" className="text-xl font-bold text-white tracking-wide">
+        <Link href="/" className="text-xl font-bold text-white">
           GiqueX
         </Link>
 
@@ -43,9 +41,9 @@ export default function Navbar() {
       className='font-bold text-2xl text-gray-300 cursor-pointer'/>
 
         <Button 
+          variant='primary'
           text='Switch to Selling'
           size='sm'
-          className='font-bold text-white hover:text-gray-300 border backdrop-blur-md shadow-lg border-white/20 hover:bg-white/20 transition duration-300'
         />
 
         <Button 
@@ -57,6 +55,7 @@ export default function Navbar() {
         />
 
         <Button 
+        variant='primary'
           size='md'
           startIcon={<CgProfile />}
           className='font-bold rounded-full border'

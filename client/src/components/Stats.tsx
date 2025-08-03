@@ -34,8 +34,8 @@ const Stats = () => {
   }, [])
 
   return (
-    <section className="w-full py-4 mb-30 px-6 flex flex-col items-center justify-center ">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-30 text-white max-w-4xl w-full text-center">
+    <section className="w-full py-4 mb-20 px-6 flex flex-col items-center justify-center ">
+      <div className="md:grid grid grid-col grid-cols-1 md:grid-cols-3 gap-10 md:gap-30 text-white max-w-4xl w-full text-center">
         {stats.map((stat, i) => (
           <div key={i} className="flex rounded-2xl p-8 flex-col items-center gap-2 bg-white/5 backdrop-blur-md border-b-4 border-white/10">
             <div className="text-3xl text-indigo-400">{stat.icon}</div>

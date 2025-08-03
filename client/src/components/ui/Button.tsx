@@ -17,7 +17,7 @@ interface ButtonProps {
 const baseStyle = "inline-flex items-center justify-center gap-2 rounded-md cursor-pointer transition-all";
 
 const variantStyles: Record<Variants, string> = {
-  primary: "bg-blue-500 text-white hover:bg-indigo-800 shadow hover:shadow-md hover:shadow-gray-500",
+  primary: 'font-bold text-white hover:text-gray-300 border backdrop-blur-md shadow-lg border-white/20 hover:bg-white/20 transition duration-300',
   secondary: "bg-purple-300 hover:bg-purple-300 shadow hover:shadow-md hover:shadow-gray-500 rounded-md text-sm",
   google: "w-full font-bold text-sm border border-white/20 bg-white/5 hover:bg-white/10 rounded-lg",
   login: "w-full text-sm mt-6 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold",

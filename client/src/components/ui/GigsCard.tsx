@@ -1,6 +1,6 @@
 'use client'
 
-import { FaHeart, FaStar, FaPlay } from 'react-icons/fa'
+import { FaStar } from 'react-icons/fa'
 
 const GigsCard = () => {
   return (

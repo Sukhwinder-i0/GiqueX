@@ -2,7 +2,18 @@
 
 import { FaCheckCircle, FaClock } from 'react-icons/fa'
 
-const orders = [
+type OrderStatus = 'completed' | 'in progress'
+
+type Order = {
+  id: string
+  gig: string
+  seller: string
+  date: string
+  price: string
+  status: OrderStatus
+}
+
+const orders: Order[] = [
   {
     id: 'order001',
     gig: 'Design portfolio website',
@@ -10,14 +21,6 @@ const orders = [
     date: 'July 5, 2025',
     price: '₹6,500',
     status: 'completed',
-  },
-  {
-    id: 'order002',
-    gig: 'Build Discord bot',
-    seller: 'CodeMasterX',
-    date: 'July 7, 2025',
-    price: '₹3,200',
-    status: 'in progress',
   },
 ]
 
