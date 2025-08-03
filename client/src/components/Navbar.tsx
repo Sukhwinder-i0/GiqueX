@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { LogIn, Router } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { Button } from "./ui/Button";
 import SearchBar from "./ui/SearchBar";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
