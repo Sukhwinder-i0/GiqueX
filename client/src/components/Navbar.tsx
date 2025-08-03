@@ -65,7 +65,7 @@ export default function Navbar() {
               size="md"
               startIcon={<LogIn size={16} strokeWidth={2.5} />}
               className="font-bold"
-              onClick={() => router.push('/signin')}
+              onClick={() => router.push('/auth')}
             />
           )}
 
