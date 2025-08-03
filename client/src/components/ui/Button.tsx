@@ -7,7 +7,7 @@ type Sizes = "sm" | "md" | "lg";
 interface ButtonProps {
   variant: Variants;
   size?: Sizes;
-  text: string;
+  text?: string;
   startIcon?: ReactElement;
   endIcon?: ReactElement;
   onClick?: () => void;

@@ -6,6 +6,9 @@ import { LogIn } from 'lucide-react';
 import { Button } from './ui/Button';
 import SearchBar from './ui/SearchBar';
 import { useRouter } from 'next/navigation';
+import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+import { IoMdNotifications } from 'react-icons/io';
+import { CgProfile } from 'react-icons/cg';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,22 +16,37 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-10">
+      <div className="w-full fixed mx-auto px-10 py-1.5 flex justify-between items-center backdrop-blur-md bg-white/10 border-white/50 shadow-md rounded-md z-50">
       
         <Link href="/" className="text-xl font-bold text-white tracking-wide">
           GiqueX
         </Link>
 
-        <nav className="hidden md:flex items-center justify-around gap-6 text-white text-sm font-medium w-[40%] ">
+        
+
+        <nav className="hidden md:flex items-center justify-around gap-6 text-white text-sm font-medium w-[50%] ">
+
+          
+          <SearchBar className='w-90' placeholder='Search talent' />
           <Link href="/">Home</Link>
-          <Link href="/gigs">Gigs</Link>
           <Link href="/orders">Orders</Link>
-          <Link href="/profile">Profile</Link>
-          <SearchBar placeholder='Search talent' />
           {/* <Link href="/login" className="px-4 py-1 rounded-full border border-white/30 hover:bg-white/10 transition">
             Login
           </Link> */}
         </nav>
+
+        <div className='flex gap-6 justify-center items-center'>
+
+       <IoMdNotifications className='font-bold text-2xl text-gray-200 cursor-pointer' />
+
+      <IoChatboxEllipsesOutline 
+      className='font-bold text-2xl text-gray-300 cursor-pointer'/>
+
+        <Button 
+          text='Switch to Selling'
+          size='sm'
+          className='font-bold text-white hover:text-gray-300 border backdrop-blur-md shadow-lg border-white/20 hover:bg-white/20 transition duration-300'
+        />
 
         <Button 
           text='Sign In'
@@ -37,6 +55,15 @@ export default function Navbar() {
           startIcon={<LogIn size={16} strokeWidth={2.5} />}
           className='font-bold'
         />
+
+        <Button 
+          size='md'
+          startIcon={<CgProfile />}
+          className='font-bold rounded-full border'
+        />
+
+
+         </div>
         
 
       </div>
