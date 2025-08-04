@@ -28,10 +28,12 @@ router.get(
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(200).json({
-      message: 'Google login successful!',
-      user,
-    });
+    // res.status(200).json({
+    //   message: 'Google login successful!',
+    //   user,
+    // });
+
+    res.redirect('https://giquex.vercel.com/home');
   },
 );
 

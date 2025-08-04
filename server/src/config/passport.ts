@@ -32,7 +32,7 @@ passport.use(
       done: VerifyCallback
     ) => {
       try {
-        // your logic
+        
         const user = await UserModel.findOne({ email: profile.emails?.[0].value });
         if (!user) {
           const newUser = await UserModel.create({
