@@ -89,7 +89,7 @@ export const updateGig = asyncHandler(async (req: AuthRequest, res: Response) =>
 
 export const deleteGig = asyncHandler(async (req: AuthRequest, res: Response) => {
   const gig = await gigsModel.findById(req.params.id)
-  if(gig.user.toString() !== req.userId?.toString()) throw new ApiError(403, ' you are not authorized to update this gig')
+  if(gig?.user.toString() !== req.userId?.toString()) throw new ApiError(403, ' you are not authorized to update this gig')
 
   const deleted = await gigsModel.findByIdAndDelete(req.params.id)
 

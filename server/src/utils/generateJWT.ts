@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 interface JWTPayload {
   id: string;
@@ -14,5 +14,7 @@ export const generateJWT = (
     throw new Error("JWT_SECRET is not defined in environment");
   }
 
-  return jwt.sign(payload, secret as string, { expiresIn });
+  return jwt.sign(payload, secret, {
+    expiresIn
+  } as jwt.SignOptions);
 };
