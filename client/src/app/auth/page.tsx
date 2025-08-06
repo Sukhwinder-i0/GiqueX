@@ -6,28 +6,82 @@ import { Button } from "@/components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { handleEmailLogin, handleEmailSignup, handleGoogleLogin } from "@/lib/handleAuth";
 import { useRouter } from "next/navigation";
-
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, setLogin] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const validateInputs = () => {
+    if (!email?.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+    if (!password?.trim()) {
+      toast.error("Password is required");
+      return false;
+    }
+    if (!login && !name?.trim()) {
+      toast.error("Name is required");
+      return false;
+    }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return false;
+    }
+    return true;
+  };
 
   const handleSignupClick = async () => {
-    const result = await handleEmailSignup(email, name, password);
-    if (result?.success) {
-      router.push("/verify-otp?email=" + encodeURIComponent(email));
-    } else {
-      alert(result?.message || "Something went wrong");
+    if (!validateInputs()) return;
+
+    setLoading(true);
+    try {
+      const result = await handleEmailSignup(name, email, password);
+      if (result?.success) {
+        toast.success("OTP sent to email");
+        router.push("/auth/verify-otp?email=" + encodeURIComponent(email));
+      } else {
+        toast.error(result?.message || "Something went wrong");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Signup failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleLoginClick = async () => {
-    await handleEmailLogin(email, password);
-    router.push('/')
+    if (!validateInputs()) return;
+
+    setLoading(true);
+    try {
+      const result = await handleEmailLogin(email, password);
+      if (result?.success) {
+        toast.success("Login successful");
+        router.push("/");
+      } else {
+        toast.error(result?.message || "Login failed");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Login error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLoginClick = async () => {
+    setLoading(true);
+    try {
+      await handleGoogleLogin();
+    } catch (err: any) {
+      toast.error(err.message || "Google login failed");
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,9 +97,9 @@ export default function Page() {
         </p>
 
         <div className="space-y-4">
-          {login ? null : (
+          {!login && (
             <Input
-              type="name"
+              type="text"
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -68,23 +122,17 @@ export default function Page() {
 
         {login && (
           <div className="flex justify-end text-xs mt-2 text-gray-200">
-            <button className="hover:underline">Forgot password?</button>
+            <button className="hover:underline" disabled={loading}>
+              Forgot password?
+            </button>
           </div>
         )}
 
-        {login ? (
-          <Button
-            text="Sign In"
-            variant="login"
-            onClick={() => handleLoginClick}
-          />
-        ) : (
-          <Button
-            text="Sign Up"
-            variant="login"
-            onClick={() => handleSignupClick}
-          />
-        )}
+        <Button
+          text={loading ? "Processing..." : login ? "Sign In" : "Sign Up"}
+          variant="login"
+          onClick={login ? handleLoginClick : handleSignupClick}
+        />
 
         <div className="flex items-center my-4 gap-2 text-gray-300 text-sm">
           <div className="flex-grow h-px bg-gray-500" />
@@ -93,19 +141,19 @@ export default function Page() {
         </div>
 
         <Button
-          text="continue with google"
+          text="Continue with Google"
           variant="google"
           startIcon={<FcGoogle />}
-          onClick={handleGoogleLogin}
+          onClick={handleGoogleLoginClick}
         />
 
         <p className="text-sm text-center text-gray-300 mt-4">
-          {login ? "Don’t have an account?" : "Already have an account?"}{" "}
+          {login ? "Don't have an account?" : "Already have an account?"}{" "}
           <span
-            onClick={() => setLogin(!login)}
-            className="text-blue-400 hover:underline cursor-pointer"
+            onClick={() => !loading && setLogin(!login)}
+            className={`text-blue-400 hover:underline ${loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
           >
-            {login ? "sign-up" : "sign-in"}
+            {login ? "Sign up" : "Sign in"}
           </span>
         </p>
       </div>

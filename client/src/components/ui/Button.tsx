@@ -12,6 +12,8 @@ interface ButtonProps {
   endIcon?: ReactElement;
   onClick?: () => void;
   className?: string;
+  disabled?: boolean
+  type?: string
 }
 
 const baseStyle = "inline-flex items-center justify-center gap-2 rounded-md cursor-pointer transition-all";
