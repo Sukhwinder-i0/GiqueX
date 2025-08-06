@@ -14,16 +14,16 @@ import orderRoutes from './routes/order.routes'
 import reviewsRoutes from './routes/review.routes'
 
 dotenv.config();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT;
 const app = express();
 
 
 const corsOptions = {
   origin: [
-    'http://localhost:3000', // Your frontend URL in development
-    'https://yourdomain.com', // Your frontend URL in production
+    'http://localhost:3000',
+    'https://giquex.vercel.app', 
   ],
-  credentials: true, // Allow cookies to be sent
+  credentials: true, 
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -31,13 +31,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', req.headers.origin);
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+//   next();
+// });
 app.use(express.json());
 app.use(cookieParser());
 
