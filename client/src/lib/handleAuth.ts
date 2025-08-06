@@ -1,7 +1,8 @@
-// lib/handleAuth.ts
+
 export const handleGoogleLogin = async () => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    console.log(baseUrl)
     if (!baseUrl) {
       throw new Error("API base URL not configured");
     }
@@ -15,35 +16,34 @@ export const handleGoogleLogin = async () => {
 export const handleEmailLogin = async (email: string, password: string) => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!baseUrl) {
-      throw new Error("API base URL not configured");
-    }
+    if (!baseUrl) throw new Error("API base URL not configured");
+    // console.log(baseUrl)
 
-    const res = await fetch(`${baseUrl}/auth/email`, {
+    const res = await fetch(`${baseUrl}/auth/email/signin`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password }),
-      credentials: 'include', // Include cookies if using them
+      credentials: 'include',
     });
 
-    const data = await res.json();
+    const contentType = res.headers.get('content-type');
+    let data: any;
 
-    if (!res.ok) {
-      // Handle different error status codes
-      if (res.status === 404) {
-        throw new Error("User not found with this email");
-      } else if (res.status === 403) {
-        throw new Error("Please verify your email before logging in");
-      } else if (res.status === 401) {
-        throw new Error("Incorrect password");
-      } else {
-        throw new Error(data?.message || "Login failed");
-      }
+    if (contentType && contentType.includes('application/json')) {
+      data = await res.json();
+    } else {
+      const text = await res.text();
+      console.error("Non-JSON response:", text);
+      throw new Error(`Unexpected response from server.`);
     }
 
-    // Store the token in localStorage or cookies
+    if (!res.ok) {
+      if (res.status === 404) throw new Error("User not found with this email");
+      if (res.status === 403) throw new Error("Please verify your email before logging in");
+      if (res.status === 401) throw new Error("Incorrect password");
+      throw new Error(data?.message || "Login failed");
+    }
+
     if (data?.data?.token) {
       localStorage.setItem('authToken', data.data.token);
       localStorage.setItem('user', JSON.stringify(data.data.user));
@@ -52,17 +52,17 @@ export const handleEmailLogin = async (email: string, password: string) => {
     return {
       success: true,
       data: data.data,
-      message: data.message
+      message: data.message,
     };
-
   } catch (err: any) {
-    console.error("Email login failed", err);
+    console.error("Email login failed:", err);
     return {
       success: false,
-      message: err.message || "Network error. Please check your connection."
+      message: err.message || "Network error. Please check your connection.",
     };
   }
 };
+
 
 export const handleEmailSignup = async (name: string, email: string, password: string) => {
   try {
@@ -71,7 +71,6 @@ export const handleEmailSignup = async (name: string, email: string, password: s
       throw new Error("API base URL not configured");
     }
 
-    // Basic validation
     if (!name?.trim()) {
       throw new Error("Name is required");
     }
@@ -130,7 +129,7 @@ export const handleOtpVerification = async (email: string, otp: string) => {
       throw new Error("OTP is required");
     }
 
-    const res = await fetch(`${baseUrl}/auth/verify-otp`, {
+    const res = await fetch(`${baseUrl}/auth/email/verify-otp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

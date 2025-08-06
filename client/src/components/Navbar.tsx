@@ -43,9 +43,7 @@ export default function Navbar() {
             <Link href="/orders" className="text-white font-medium">
               Orders
             </Link>
-            <Link href="/gigs" className="text-white font-medium">
-              Gigs
-            </Link>
+            
 
             <Button variant="primary" text="Start Selling" size="sm" />
           </div>
