@@ -10,11 +10,22 @@ import { generateJWT } from '../utils/generateJWT';
 export const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
-  if(!name || !email || !password) throw new ApiError(403, 'all fileds are required')
+  if (!name?.trim()) {
+    throw new ApiError(400, 'Name is required');
+  }
+
+  if (!email?.trim()) {
+    throw new ApiError(400, 'Email is required');
+  }
+
+  if (!password || password.length < 6) {
+    throw new ApiError(400, 'Password must be at least 6 characters');
+  }
 
   const existingUser = await UserModel.findOne({ email });
-
-  if (existingUser) throw new ApiError(401, 'User already exists');
+  if (existingUser) {
+    throw new ApiError(409, 'User already exists with this email');
+  }
 
   const user = await UserModel.create({ name, email, password });
 
@@ -22,30 +33,37 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
   user.otp = {
     code: otp,
-    expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 mins expiry
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000),
   };
 
   await user.save();
 
-  await sendEmail(
-    email,
-    'Verify your email',
-    `Hello ${name}, your OTP is: ${otp}`
-  );
+  await sendEmail(email, 'Verify your email', `Hello ${name}, your OTP is: ${otp}`);
 
-  res.status(201).json(new ApiResponse(201, null, 'OTP sent to email'));
+  res.status(201).json(new ApiResponse(201, null, 'OTP sent to your email'));
 });
+
 
 export const verifyUserOtp = asyncHandler(async (req: Request, res: Response) => {
   const { email, otp } = req.body;
 
-  if(!otp) throw new ApiError(401,"provide required otp")
+  if (!email?.trim()) {
+    throw new ApiError(400, 'Email is required');
+  }
+
+  if (!otp?.trim()) {
+    throw new ApiError(400, 'OTP is required');
+  }
 
   const user = await UserModel.findOne({ email });
-  if (!user) throw new ApiError(404, 'User not found');
+  if (!user) {
+    throw new ApiError(404, 'No user found with this email');
+  }
 
   const isValid = verifyOtp(user, otp);
-  if (!isValid) throw new ApiError(400, 'Invalid or expired OTP');
+  if (!isValid) {
+    throw new ApiError(400, 'Invalid or expired OTP');
+  }
 
   await UserModel.updateOne(
     { _id: user._id },
@@ -53,40 +71,46 @@ export const verifyUserOtp = asyncHandler(async (req: Request, res: Response) =>
       $set: { isVerified: true },
       $unset: { otp: '' },
     }
-);
+  );
 
-
-  res.status(200).json(new ApiResponse(200, null, 'Email verified'));
+  res.status(200).json(new ApiResponse(200, null, 'Email verified successfully'));
 });
+
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  if(!email || !password) throw new ApiError(403, 'all fileds are required')
+  if (!email?.trim()) {
+    throw new ApiError(400, 'Email is required');
+  }
+
+  if (!password) {
+    throw new ApiError(400, 'Password is required');
+  }
 
   const user = await UserModel.findOne({ email });
-  if (!user) throw new ApiError(401, 'user does not exist with this email');
+  if (!user) {
+    throw new ApiError(404, 'User not found with this email');
+  }
 
-  // console.log(user.isVerified)
-  // console.log(user.otp)
-  // console.log(user.password)
-
-  if(!user.isVerified) throw new ApiError(401, 'email is not verified')
+  if (!user.isVerified) {
+    throw new ApiError(403, 'Please verify your email before logging in');
+  }
 
   const isMatch = await user.comparePassword(password);
   if (!isMatch) {
-    throw new ApiError(401, 'Invalid password');
+    throw new ApiError(401, 'Incorrect password');
   }
 
-  const token = generateJWT({ 
-    id: user._id as string,
-    role: user.role
+  const token = generateJWT({
+    id: user._id.toString(),
+    role: user.role,
   });
 
-  if(!token) throw new ApiError(403, 'error while genetrating jwt')
+  if (!token) {
+    throw new ApiError(500, 'Token generation failed');
+  }
 
-  // localStorage.setItem('token', token)
-  
   res.status(200).json(
     new ApiResponse(200, {
       token,

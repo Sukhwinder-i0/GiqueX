@@ -13,20 +13,34 @@ import gigsRoutes from './routes/gigs.routes';
 import orderRoutes from './routes/order.routes'
 import reviewsRoutes from './routes/review.routes'
 
-
 dotenv.config();
-
 const PORT = process.env.PORT || 5001;
 const app = express();
 
+
+const corsOptions = {
+  origin: [
+    'http://localhost:3000', // Your frontend URL in development
+    'https://yourdomain.com', // Your frontend URL in production
+  ],
+  credentials: true, // Allow cookies to be sent
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  }),
-);
+
 app.use(passport.initialize());
 
 
