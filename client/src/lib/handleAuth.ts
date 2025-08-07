@@ -11,6 +11,7 @@ export const handleGoogleLogin = async () => {
     console.error("Google login failed", err);
     throw err;
   }
+  
 };
 
 export const handleEmailLogin = async (email: string, password: string) => {
