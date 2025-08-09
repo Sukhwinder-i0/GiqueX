@@ -13,9 +13,9 @@ export function ProfileHeader({ avatar, name, email }: ProfileHeaderProps) {
         <div className="relative w-32 h-32 mb-4">
           <Image
             src={avatar}
-            alt={name}
+            alt={name}  
             fill
-            className="rounded-full object-cover border-4 border-purple-500/30"
+            className="rounded-full object-cover border-2 border-purple-500/30"
           />
         </div>
         <h1 className="text-3xl font-bold">{name}</h1>

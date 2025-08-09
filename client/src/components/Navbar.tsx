@@ -11,12 +11,12 @@ import { CgProfile } from "react-icons/cg";
 import { HiMenu } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { user } = useAuthStore();
-
 
   return (
     <>
@@ -33,8 +33,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-        
-          
           <div className="hidden md:flex gap-4 items-center">
             <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
             <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
@@ -44,19 +42,30 @@ export default function Navbar() {
             <Link href="/orders" className="text-white font-medium">
               Orders
             </Link>
-            
 
             <Button variant="primary" text="Start Selling" size="sm" />
           </div>
 
           {user ? (
-            <Button
-              variant="primary"
-              size="md"
-              startIcon={<CgProfile />}
-              className="font-bold rounded-full border"
-              onClick={() => router.push('/me')}
-            />
+            <div
+              className="relative w-8 h-8 cursor-pointer"
+              onClick={() => router.push("/me")}
+              aria-label="Profile"
+            >
+              {user.avatar ? (
+                <Image
+                  src={user.avatar}
+                  alt={user.name}
+                  fill
+                  className="rounded-full object-cover border-1 border-white/30"
+                />
+              ) : (
+                <CgProfile
+                  size={24}
+                  className="text-white font-bold p-2 rounded-md bg-white/20 cursor-pointer hover:bg-white/30 transition-colors flex items-center gap-2"
+                />
+              )}
+            </div>
           ) : (
             <Button
               text="Sign In"
@@ -64,7 +73,7 @@ export default function Navbar() {
               size="md"
               startIcon={<LogIn size={16} strokeWidth={2.5} />}
               className="font-bold"
-              onClick={() => router.push('/auth')}
+              onClick={() => router.push("/auth")}
             />
           )}
 
@@ -75,7 +84,6 @@ export default function Navbar() {
           >
             <HiMenu />
           </button>
-
         </div>
       </div>
 
@@ -83,7 +91,6 @@ export default function Navbar() {
       {isOpen && (
         <div className="fixed w-full inset-0 z-50 bg-black/40 flex justify-end md:hidden">
           <div className="w-64 bg-white/10 backdrop-blur-md h-full p-6 flex flex-col gap-6 border-l border-white/20 shadow-xl">
-            
             <button
               className="self-end text-white text-2xl mb-4"
               onClick={() => setIsOpen(false)}
@@ -91,13 +98,13 @@ export default function Navbar() {
             >
               ×
             </button>
-             <Button
+            <Button
               variant="primary"
               text="Start Selling"
               size="sm"
               className="w-full"
             />
-           
+
             <Link
               href="/"
               onClick={() => setIsOpen(false)}
@@ -119,9 +126,8 @@ export default function Navbar() {
             >
               Gigs
             </Link>
-             <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
+            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
             <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
-           
           </div>
         </div>
       )}

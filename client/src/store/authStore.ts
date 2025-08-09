@@ -1,11 +1,17 @@
 import { api } from '@/lib/api';
 import { create } from 'zustand';
+import { toast } from 'react-hot-toast';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'; // for typing only
 
 interface Review {
   from: string;
   rating: number;
   comment: string;
   date: string;
+}
+interface Language {
+  name: string;
+  level: 'Native/Bilingual' | 'Fluent' | 'Conversational';
 }
 
 interface User {
@@ -16,6 +22,7 @@ interface User {
   isVerified: boolean;
   reviews: Review[];
   role: 'buyer' | 'seller';
+  languages?: Language[];
 }
 
 interface AuthState {
@@ -23,7 +30,7 @@ interface AuthState {
   isLoading: boolean;
   isLoggedIn: boolean;
   fetchUser: () => Promise<void>;
-  logout: () => Promise<void>;
+  logout: (router?: AppRouterInstance) => Promise<void>; 
   setUser: (user: User | null) => void;
 }
 
@@ -45,12 +52,19 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  logout: async () => {
-    try {
-      await api.post('/auth/logout');
-      set({ user: null, isLoggedIn: false });
-    } catch (err) {
-      console.error('Logout failed', err);
+ logout: async (router) => {
+  try {
+    await api.post('/auth/logout');
+    set({ user: null, isLoggedIn: false });
+    
+    toast.success('Logged out successfully');
+    
+    if (router) {
+      setTimeout(() => router.push('/auth'), 200);
     }
-  },
+  } catch (err) {
+    console.error('Logout failed', err);
+    toast.error('Logout failed');
+  }
+}
 }));
