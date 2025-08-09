@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import { ApiResponse } from '../../utils/ApiResponse';
 
 const router = express.Router();
 
@@ -28,12 +29,8 @@ router.get(
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    // res.status(200).json({
-    //   message: 'Google login successful!',
-    //   user,
-    // });
+    res.redirect(`${process.env.CLIENT_URL}/?login=success`);
 
-    res.redirect('https://giquex.vercel.com/home');
   },
 );
 

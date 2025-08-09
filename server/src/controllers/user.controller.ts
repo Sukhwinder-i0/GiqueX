@@ -11,9 +11,7 @@ export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!user) throw new ApiError(404, 'User not found');
 
   res.status(200).json({
-    success: true,
-    message: 'User profile fetched',
-    data: user,
+    user
   });
 });
 
@@ -35,6 +33,13 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
 
   // since i am updating the userROle but jwt contains prevoius role
   // console.log(user.role)
+
+   res.cookie('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
 
   res.status(200).json({
     success: true,
