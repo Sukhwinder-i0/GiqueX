@@ -8,6 +8,16 @@ export interface UserDocument extends Document {
   avatar?: string;
   password?: string;
   isVerified: boolean;
+  languages?: Array<{
+    name: string;
+    level: 'Native/Bilingual' | 'Fluent' | 'Conversational';
+  }>;
+  reviews?: Array<{
+    from: string;
+    rating: number;
+    comment: string;
+    date: string;
+  }>;
   otp?: {
     code: string;
     expiresAt: Date;
@@ -41,9 +51,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ['buyer', 'seller'],
       default: 'buyer',
-    }
-
-  },
+    },
+    languages: [
+      {
+        name: String,
+        level: {
+          type: String,
+          enum: ['Native/Bilingual', 'Fluent', 'Conversational'],
+        },
+      },
+    ],
+    reviews: [
+      {
+        from: String,
+        rating: { type: Number, min: 1, max: 5 },
+        comment: String,
+        date: String,
+      }]
+    },
 
 
   { timestamps: true }

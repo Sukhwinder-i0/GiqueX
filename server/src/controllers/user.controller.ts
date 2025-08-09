@@ -55,3 +55,16 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
     }
   });
 });
+
+export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully"
+  });
+});
