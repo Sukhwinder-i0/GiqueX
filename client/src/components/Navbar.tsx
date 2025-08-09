@@ -10,11 +10,13 @@ import { IoMdNotifications } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { HiMenu } from "react-icons/hi";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Navbar() {
-  const [isSignin ] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const { user } = useAuthStore();
+
 
   return (
     <>
@@ -31,8 +33,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          
-
+        
           
           <div className="hidden md:flex gap-4 items-center">
             <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
@@ -48,13 +49,13 @@ export default function Navbar() {
             <Button variant="primary" text="Start Selling" size="sm" />
           </div>
 
-          {isSignin ? (
+          {user ? (
             <Button
               variant="primary"
               size="md"
               startIcon={<CgProfile />}
               className="font-bold rounded-full border"
-              onClick={() => router.push('/profile')}
+              onClick={() => router.push('/me')}
             />
           ) : (
             <Button

@@ -7,6 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { handleEmailLogin, handleEmailSignup, handleGoogleLogin } from "@/lib/handleAuth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/store/authStore";
 
 export default function Page() {
   const [name, setName] = useState("");
@@ -15,6 +16,7 @@ export default function Page() {
   const [login, setLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { setUser } = useAuthStore()
 
   const validateInputs = () => {
     if (!email?.trim()) {
@@ -64,6 +66,8 @@ export default function Page() {
       if (result?.success) {
         toast.success("Login successful");
         router.push("/");
+        setUser(result.data.user); 
+        console.log(result.data.user)
       } else {
         toast.error(result?.message || "Login failed");
       }
@@ -77,7 +81,7 @@ export default function Page() {
   const handleGoogleLoginClick = async () => {
     setLoading(true);
     try {
-      await handleGoogleLogin();
+      const result = await handleGoogleLogin();
     } catch (err: any) {
       toast.error(err.message || "Google login failed");
       setLoading(false);

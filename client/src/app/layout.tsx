@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description: "Skill Marketplace",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{

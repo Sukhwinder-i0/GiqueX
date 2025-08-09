@@ -1,12 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ['lh3.googleusercontent.com'], // Allow Google profile pictures
+  },
   reactStrictMode: true,
   env: {
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
   },
-  // Add these configurations
   distDir: '.next',
   typescript: {
     tsconfigPath: './tsconfig.json',
