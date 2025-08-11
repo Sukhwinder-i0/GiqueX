@@ -1,7 +1,8 @@
 import { api } from '@/lib/api';
 import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context'; // for typing only
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
 
 interface Review {
   from: string;
@@ -54,7 +55,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
  logout: async (router) => {
   try {
-    await api.post('/auth/logout');
+    await api.post('/user/logout');
     set({ user: null, isLoggedIn: false });
     
     toast.success('Logged out successfully');

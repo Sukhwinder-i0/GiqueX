@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation'
 import React, { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
-const page = () => {
+const Page = () => {
 
 
   const params = useSearchParams();
@@ -32,4 +32,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

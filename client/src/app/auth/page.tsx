@@ -50,7 +50,7 @@ export default function Page() {
       } else {
         toast.error(result?.message || "Something went wrong");
       }
-    } catch (err: any) {
+    } catch (err) {
       toast.error(err.message || "Signup failed");
     } finally {
       setLoading(false);
@@ -81,7 +81,7 @@ export default function Page() {
   const handleGoogleLoginClick = async () => {
     setLoading(true);
     try {
-      const result = await handleGoogleLogin();
+      await handleGoogleLogin();
     } catch (err: any) {
       toast.error(err.message || "Google login failed");
       setLoading(false);

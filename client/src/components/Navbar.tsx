@@ -34,7 +34,6 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <div className="hidden md:flex gap-4 items-center">
-            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
             <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
             <Link href="/" className="text-white font-medium">
               Home
