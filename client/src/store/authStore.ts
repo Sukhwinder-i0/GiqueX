@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { toast } from 'react-hot-toast';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
+type Role = 'buyer' | 'seller';
 
 interface Review {
   from: string;
@@ -22,12 +23,13 @@ interface User {
   avatar: string;
   isVerified: boolean;
   reviews: Review[];
-  role: 'buyer' | 'seller';
+  role: Role;
   languages?: Language[];
 }
 
 interface AuthState {
   user: User | null;
+  switchRole: () => Promise<void>; 
   isLoading: boolean;
   isLoggedIn: boolean;
   fetchUser: () => Promise<void>;
@@ -35,37 +37,58 @@ interface AuthState {
   setUser: (user: User | null) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isLoading: false,
   isLoggedIn: false,
 
   setUser: (user) => set({ user, isLoggedIn: !!user }),
 
-  fetchUser: async () => {
+  switchRole: async () => {
+    const currentState = get().user;
+    if (!currentState) {
+      toast.error('No user is logged in.');
+      return;
+    }
+
+    const newRole: Role = currentState.role === 'buyer' ? 'seller' : 'buyer';
+    const endpoint = `/user/role/${newRole}`;
+
     try {
-      set({ isLoading: true });
-      const res = await api.get('/user/me');
-      set({ user: res.data.user, isLoggedIn: true, isLoading: false });
+      const res = await api.post(endpoint);
+      set({ user: res.data.user });
+      toast.success(`You are now a ${newRole}!`);
     } catch (err) {
-      console.error('Fetch user failed', err);
-      set({ user: null, isLoggedIn: false, isLoading: false });
+      console.error('Failed to switch role', err);
+      toast.error('Failed to switch role');
     }
   },
 
- logout: async (router) => {
-  try {
-    await api.post('/user/logout');
-    set({ user: null, isLoggedIn: false });
-    
-    toast.success('Logged out successfully');
-    
-    if (router) {
-      setTimeout(() => router.push('/auth'), 200);
+  fetchUser: async () => {
+    set({ isLoading: true });
+    try {
+      const res = await api.get('/user/me');
+      set({ user: res.data.user, isLoggedIn: true });
+    } catch (err) {
+      console.error('Fetch user failed', err);
+      set({ user: null, isLoggedIn: false });
+    } finally {
+      set({ isLoading: false });
     }
-  } catch (err) {
-    console.error('Logout failed', err);
-    toast.error('Logout failed');
+  },
+
+  logout: async (router) => {
+    try {
+      await api.post('/user/logout');
+      set({ user: null, isLoggedIn: false });
+      toast.success('Logged out successfully');
+    } catch (err) {
+      console.error('Logout failed', err);
+      toast.error('Logout failed');
+    } finally {
+      if (router) {
+        router.push('/auth');
+      }
+    }
   }
-}
 }));

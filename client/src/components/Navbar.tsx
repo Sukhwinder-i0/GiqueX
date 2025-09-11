@@ -1,22 +1,27 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 import { LogIn } from "lucide-react";
-import { Button } from "./ui/Button";
-import SearchBar from "./ui/SearchBar";
-import { IoChatboxEllipsesOutline } from "react-icons/io5";
-import { IoMdNotifications } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
 import { HiMenu } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
-import Image from "next/image";
+import { Button } from "./ui/Button";
+import SearchBar from "./ui/SearchBar";
+import { BuyerNav } from "./layout/nav/BuyerNav";
+import { SellerNav } from "./layout/nav/SellerNav";
+import { UserMenu } from "./layout/nav/UserMenu";
+import { MobileMenu } from "./layout/nav/MobileMenu";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const { user } = useAuthStore();
+  const { user, switchRole } = useAuthStore();
+
+  const handleSwitchRole = async () => {
+    await switchRole();
+    if (user?.role === "seller") router.push("/seller/dashboard");
+  };
 
   return (
     <>
@@ -25,46 +30,29 @@ export default function Navbar() {
           GiqueX
         </Link>
 
-        <div className="flex-1 flex justify-center">
-          <SearchBar
-            className="w-30 sm:w-60 md:w-90 px-2"
-            placeholder="Search talent"
-          />
-        </div>
+        {(user?.role === "buyer" || !user) && (
+          <div className="flex-1 flex justify-center">
+            <SearchBar
+              className="w-30 sm:w-60 md:w-90 px-2"
+              placeholder="Search talent"
+            />
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
-          <div className="hidden md:flex gap-4 items-center">
-            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
-            <Link href="/" className="text-white font-medium">
-              Home
-            </Link>
-            <Link href="/orders" className="text-white font-medium">
-              Orders
-            </Link>
+          {user?.role === "seller" ? <SellerNav /> : <BuyerNav />}
 
-            <Button variant="primary" text="Start Selling" size="sm" />
-          </div>
+          <Button
+            variant="primary"
+            text={
+              user?.role === "buyer" ? "Start Selling" : "Switch to Buying"
+            }
+            size="sm"
+            onClick={handleSwitchRole}
+          />
 
           {user ? (
-            <div
-              className="relative w-8 h-8 cursor-pointer"
-              onClick={() => router.push("/me")}
-              aria-label="Profile"
-            >
-              {user.avatar ? (
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  fill
-                  className="rounded-full object-cover border-1 border-white/30"
-                />
-              ) : (
-                <CgProfile
-                  size={24}
-                  className="text-white font-bold p-2 rounded-md bg-white/20 cursor-pointer hover:bg-white/30 transition-colors flex items-center gap-2"
-                />
-              )}
-            </div>
+            <UserMenu user={user} />
           ) : (
             <Button
               text="Sign In"
@@ -86,50 +74,12 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Hamburger Modal for mobile */}
-      {isOpen && (
-        <div className="fixed w-full inset-0 z-50 bg-black/40 flex justify-end md:hidden">
-          <div className="w-64 bg-white/10 backdrop-blur-md h-full p-6 flex flex-col gap-6 border-l border-white/20 shadow-xl">
-            <button
-              className="self-end text-white text-2xl mb-4"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close menu"
-            >
-              ×
-            </button>
-            <Button
-              variant="primary"
-              text="Start Selling"
-              size="sm"
-              className="w-full"
-            />
-
-            <Link
-              href="/"
-              onClick={() => setIsOpen(false)}
-              className="text-white font-medium"
-            >
-              Home
-            </Link>
-            <Link
-              href="/orders"
-              onClick={() => setIsOpen(false)}
-              className="text-white font-medium"
-            >
-              Orders
-            </Link>
-            <Link
-              href="/gigs"
-              onClick={() => setIsOpen(false)}
-              className="text-white font-medium"
-            >
-              Gigs
-            </Link>
-            <IoMdNotifications className="font-bold text-2xl text-gray-200 cursor-pointer" />
-            <IoChatboxEllipsesOutline className="font-bold text-2xl text-gray-300 cursor-pointer" />
-          </div>
-        </div>
-      )}
+      <MobileMenu
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        user={user}
+        onSwitchRole={handleSwitchRole}
+      />
     </>
   );
 }

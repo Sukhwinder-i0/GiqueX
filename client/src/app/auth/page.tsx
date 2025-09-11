@@ -50,7 +50,7 @@ export default function Page() {
       } else {
         toast.error(result?.message || "Something went wrong");
       }
-    } catch (err) {
+    } catch (err: any) {
       toast.error(err.message || "Signup failed");
     } finally {
       setLoading(false);
