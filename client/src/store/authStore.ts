@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
 
     const newRole: Role = currentState.role === 'buyer' ? 'seller' : 'buyer';
-    const endpoint = `/user/role/${newRole}`;
+    const endpoint = `/user/role/switch`;
 
     try {
       const res = await api.post(endpoint);

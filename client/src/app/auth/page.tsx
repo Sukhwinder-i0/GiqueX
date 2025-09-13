@@ -16,7 +16,7 @@ export default function Page() {
   const [login, setLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { setUser } = useAuthStore()
+  const { user, setUser } = useAuthStore()
 
   const validateInputs = () => {
     if (!email?.trim()) {
@@ -65,7 +65,8 @@ export default function Page() {
       const result = await handleEmailLogin(email, password);
       if (result?.success) {
         toast.success("Login successful");
-        router.push("/");
+        if(user?.role === "seller") router.push("./seller/dashboard")
+        else router.push("/");
         setUser(result.data.user); 
         console.log(result.data.user)
       } else {

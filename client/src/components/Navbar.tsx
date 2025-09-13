@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "./ui/Button";
 import SearchBar from "./ui/SearchBar";
-import { BuyerNav } from "./layout/nav/BuyerNav";
-import { SellerNav } from "./layout/nav/SellerNav";
-import { UserMenu } from "./layout/nav/UserMenu";
-import { MobileMenu } from "./layout/nav/MobileMenu";
+import { BuyerNav } from "./nav/BuyerNav";
+import { SellerNav } from "./nav/SellerNav";
+import { UserMenu } from "./nav/UserMenu";
+import { MobileMenu } from "./nav/MobileMenu";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function Navbar() {
 
   const handleSwitchRole = async () => {
     await switchRole();
-    if (user?.role === "seller") router.push("/seller/dashboard");
+    if (user?.role === "buyer") router.push("/seller/dashboard");
   };
 
   return (
@@ -45,7 +45,7 @@ export default function Navbar() {
           <Button
             variant="primary"
             text={
-              user?.role === "buyer" ? "Start Selling" : "Switch to Buying"
+              user?.role === "seller" ? "Switch to Buying" : "Start Selling"
             }
             size="sm"
             onClick={handleSwitchRole}
