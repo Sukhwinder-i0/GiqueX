@@ -1,17 +1,16 @@
-import { Response } from "express";
-import { AuthRequest } from "../middlewares/requireAuth";
-import { asyncHandler } from "../utils/asyncHandler";
-import { UserModel } from "../models/user.model";
-import ApiError from "../utils/ApiError";
-import { generateJWT } from "../utils/generateJWT";
+import { Response } from 'express';
+import { AuthRequest } from '../middlewares/requireAuth';
+import { asyncHandler } from '../utils/asyncHandler';
+import { UserModel } from '../models/user.model';
+import ApiError from '../utils/ApiError';
+import { generateJWT } from '../utils/generateJWT';
 
 export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
-
   const user = await UserModel.findById(req.userId).select('-password -id -isVerified');
   if (!user) throw new ApiError(404, 'User not found');
 
   res.status(200).json({
-    user
+    user,
   });
 });
 
@@ -19,11 +18,11 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   const user = await UserModel.findById(req.userId);
   if (!user) throw new ApiError(404, 'User not found');
 
-  if (user.role === 'seller') user.role = 'buyer'
-  else user.role = 'seller'
+  // Set role to seller if not already
+  if (user.role !== 'seller') {
+    user.role = 'seller';
+  }
 
-    //throw new ApiError(400, 'You are already a seller');
-  
   await user.save();
 
   const token = generateJWT({
@@ -34,7 +33,7 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   // since i am updating the userROle but jwt contains prevoius role
   // console.log(user.role)
 
-   res.cookie('token', token, {
+  res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -42,17 +41,15 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
   });
 
   res.status(200).json({
-    success: true,
-    message: `You have switched to ${user.role} account`,
-    data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      token
-    }
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      isVerified: user.isVerified,
+      role: user.role,
+    },
+    token,
   });
 });
 
@@ -65,6 +62,6 @@ export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
 
   res.status(200).json({
     success: true,
-    message: "Logged out successfully"
+    message: 'Logged out successfully',
   });
 });

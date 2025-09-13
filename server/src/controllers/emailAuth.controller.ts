@@ -103,6 +103,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const token = generateJWT({
+    //@ts-ignore
     id: user._id.toString(),
     role: user.role,
   });

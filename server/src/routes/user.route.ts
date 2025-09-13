@@ -1,11 +1,12 @@
 import express from 'express';
 import { requireAuth } from '../middlewares/requireAuth';
-import { getUser, switchToSeller } from '../controllers/user.controller';
+import { getUser, logout, switchToSeller } from '../controllers/user.controller';
 
 const router = express.Router();
 
 router.get('/me', requireAuth, getUser);
-
-router.patch('/switch-role', requireAuth, switchToSeller);
+router.post('/logout', requireAuth, logout);
+// Align with client call: POST /user/role/seller
+router.post('/role/switch', requireAuth, switchToSeller);
 
 export default router;

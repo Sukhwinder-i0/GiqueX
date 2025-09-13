@@ -15,6 +15,7 @@ router.get(
     const token = jwt.sign(
       {
         id: user._id,
+        role: user.role
       },
       process.env.JWT_SECRET!,
       {
@@ -29,7 +30,11 @@ router.get(
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.redirect(`${process.env.CLIENT_URL}/?login=success`);
+    if (user.role === "seller") {
+      res.redirect(`${process.env.CLIENT_URL}/seller/dashboard?login=success`);
+    } else {
+      res.redirect(`${process.env.CLIENT_URL}/?login=success`);
+    }
 
   },
 );
