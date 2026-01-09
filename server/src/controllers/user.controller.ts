@@ -10,7 +10,8 @@ export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
   if (!user) throw new ApiError(404, 'User not found');
 
   res.status(200).json({
-    user,
+    success: true,
+    data: { user },
   });
 });
 

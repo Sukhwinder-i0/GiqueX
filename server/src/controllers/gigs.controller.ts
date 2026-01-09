@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import { AuthRequest } from "../middlewares/requireAuth";
 import ApiError from "../utils/ApiError";
@@ -19,20 +19,63 @@ export const getGigs = asyncHandler(async(req: AuthRequest, res: Response ) => {
   
 })
 
+export const getAllGigs = asyncHandler(async(req: Request, res: Response ) => {
+  const { category, search, limit = 50, page = 1 } = req.query;
+  
+  const query: any = {};
+  
+  if (category) {
+    query.category = category;
+  }
+  
+  if (search) {
+    query.$or = [
+      { title: { $regex: search, $options: 'i' } },
+      { description: { $regex: search, $options: 'i' } },
+      { tags: { $in: [new RegExp(search as string, 'i')] } }
+    ];
+  }
+  
+  const skip = (Number(page) - 1) * Number(limit);
+  
+  const gigs = await gigsModel.find(query)
+    .populate('user', 'name avatar')
+    .sort({ createdAt: -1 })
+    .limit(Number(limit))
+    .skip(skip);
+    
+  const total = await gigsModel.countDocuments(query);
+
+  res.status(200).json(
+    new ApiResponse(200, { gigs, total, page: Number(page), limit: Number(limit) }, 'Gigs fetched successfully')
+  );
+})
+
+export const getGigById = asyncHandler(async(req: Request, res: Response ) => {
+  const { id } = req.params;
+  
+  const gig = await gigsModel.findById(id)
+    .populate('user', 'name avatar email');
+    
+  if (!gig) throw new ApiError(404, 'Gig not found');
+
+  res.status(200).json(
+    new ApiResponse(200, gig, 'Gig fetched successfully')
+  );
+})
+
 export const createGig = asyncHandler(async(req: AuthRequest, res: Response) => {
   const {title, description, category, tags, price} = req.body;
   
-  if(!title || !description || !category || !tags || !price)
+  if(!title || !description || !category || !price)
     throw new ApiError(400, 'fields are required')
 
-  const mediaUrls = (req.files as Express.Multer.File[]).map(
+  const mediaUrls = (req.files as Express.Multer.File[] || []).map(
     (file) => (file as any).path
   );
 
-  const parsedTags =
-    typeof tags === 'string'
-      ? tags.split(',').map((tag) => tag.trim())
-      : [];
+  // Tags are already parsed by parseFormData middleware
+  const parsedTags = Array.isArray(tags) ? tags : [];
 
       
   const gig = new gigsModel ({
@@ -47,8 +90,8 @@ export const createGig = asyncHandler(async(req: AuthRequest, res: Response) => 
 
   await gig.save();
 
-  res.status(200).json(
-      new ApiResponse(200, gig, 'Login successful')
+  res.status(201).json(
+      new ApiResponse(201, gig, 'Gig created successfully')
   );
 })
 
@@ -69,9 +112,8 @@ export const updateGig = asyncHandler(async (req: AuthRequest, res: Response) =>
   if (price) updates.price = price;
   if (category) updates.category = category
   if (tags) {
-    updates.tags = typeof tags === 'string'
-      ? tags.split(',').map(tag => tag.trim())
-      : [];
+    // Tags are already parsed by parseFormData middleware
+    updates.tags = Array.isArray(tags) ? tags : [];
   }
 
   const mediaUrls = (req.files as Express.Multer.File[]).map(

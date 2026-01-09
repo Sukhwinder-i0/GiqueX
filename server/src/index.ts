@@ -47,9 +47,19 @@ app.use(passport.initialize());
 app.use('/api/v1/auth', googleRoutes);
 app.use('/api/v1/auth/email', emailRoutes);
 app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/user/gigs', gigsRoutes);
+app.use('/api/v1/gigs', gigsRoutes);
 app.use('/api/v1/user/orders', orderRoutes)
 app.use('/api/v1/reviews', reviewsRoutes)
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "auth-api",
+    env: process.env.NODE_ENV || "unknown",
+    platform: "railway-or-render"
+  });
+});
+
 
 app.use(errorMiddleware);
 

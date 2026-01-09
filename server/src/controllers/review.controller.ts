@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/requireAuth";
 import { asyncHandler } from "../utils/asyncHandler";
 import ApiError from "../utils/ApiError";
@@ -49,7 +49,7 @@ export const writeReview = asyncHandler (async(req: AuthRequest, res: Response) 
 })
 
 
-export const getReviews = asyncHandler( async (req: AuthRequest, res: Response ) => {
+export const getReviews = asyncHandler( async (req: Request, res: Response ) => {
   const { gigId } = req.params;
 
   const reviews = await reviewModel.find({ gig: gigId })
