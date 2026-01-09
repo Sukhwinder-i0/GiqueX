@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 
 const categories = [
   { name: 'Graphics & Design' },
@@ -21,6 +22,7 @@ const SCROLL_INTERVAL = 30 // ms
 const SCROLL_STEP = 1 // px
 
 const CategoryNav = () => {
+  const router = useRouter()
   const containerRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll effect with seamless loop
@@ -89,6 +91,7 @@ const CategoryNav = () => {
         {[...categories, ...categories].map((cat, index) => (
           <div
             key={index}
+            onClick={() => router.push(`/gigs?category=${encodeURIComponent(cat.name)}`)}
             className="flex items-center gap-1 px-3 py-1 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer text-sm"
           >
             <span>{cat.name}</span>

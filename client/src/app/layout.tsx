@@ -5,6 +5,7 @@ import BackgroundLayout from "@/components/BackgroundLayout";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <BackgroundLayout> 
-          <Navbar />
+          <Suspense fallback={<div className="h-16"></div>}>
+            <Navbar />
+          </Suspense>
           <Toaster position="bottom-right" reverseOrder={false} />
           {children}
           <Footer />

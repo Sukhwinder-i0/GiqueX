@@ -2,8 +2,10 @@
 
 import { Button } from '@/components/ui/Button';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 export default function HeroSection() {
+  const router = useRouter();
   return (
     <section className="flex flex-col items-center justify-center text-center px-6 py-24 md:py-30">
      
@@ -31,9 +33,10 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
-        <Button variant='secondary' size="md" text='Get Started' className=' text-nowrap' />
+        <Button variant='secondary' size="md" text='Get Started' className=' text-nowrap' onClick={() => router.push('/auth')} />
         <Button variant="google" size="md" className='text-white'
           text='Explore Marketplace'
+          onClick={() => router.push('/gigs')}
         />
       </motion.div>
     </section>

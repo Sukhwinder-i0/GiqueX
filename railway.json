@@ -1,0 +1,7 @@
+{
+    "rootDirectory": "server",
+    "build": {
+      "builder": "node"
+    }
+  }
+  

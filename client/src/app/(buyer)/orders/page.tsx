@@ -5,14 +5,27 @@ import { FaCheckCircle, FaClock } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { api } from "@/lib/api"; // adjust this import if your path is different
 
-type OrderStatus = "completed" | "in progress" | "cancelled";
+type OrderStatus = "completed" | "in-progress" | "pending";
 
 type Order = {
-  id: string;
-  gig: string;
-  seller: string;
-  date: string;
-  price: string;
+  _id: string;
+  gig: {
+    _id: string;
+    title: string;
+    price: number;
+  } | string;
+  seller: {
+    _id: string;
+    name: string;
+    email: string;
+  } | string;
+  buyer: {
+    _id: string;
+    name: string;
+    email: string;
+  } | string;
+  createdAt: string;
+  price: number;
   status: OrderStatus;
 };
 
@@ -21,9 +34,13 @@ const statusStyles = {
     label: "Completed",
     icon: <FaCheckCircle className="text-green-400" />,
   },
-  "in progress": {
+  "in-progress": {
     label: "In Progress",
     icon: <FaClock className="text-yellow-400" />,
+  },
+  "pending": {
+    label: "Pending",
+    icon: <FaClock className="text-blue-400" />,
   },
   cancelled: {
     label: "Cancelled",
@@ -32,16 +49,21 @@ const statusStyles = {
 };
 
 function OrderRow({ order }: { order: Order }) {
+  const gigTitle = typeof order.gig === 'object' ? order.gig.title : order.gig;
+  const sellerName = typeof order.seller === 'object' ? order.seller.name : order.seller;
+  const orderDate = new Date(order.createdAt).toLocaleDateString();
+  const price = typeof order.gig === 'object' ? order.gig.price : order.price;
+
   return (
     <tr className="border-b border-white/10 hover:bg-white/10 transition-all">
-      <td className="px-6 py-4">{order.id}</td>
-      <td className="px-6 py-4">{order.gig}</td>
-      <td className="px-6 py-4">{order.seller}</td>
-      <td className="px-6 py-4">{order.date}</td>
-      <td className="px-6 py-4 font-semibold">{order.price}</td>
+      <td className="px-6 py-4">{order._id.slice(-8)}</td>
+      <td className="px-6 py-4">{gigTitle}</td>
+      <td className="px-6 py-4">{sellerName}</td>
+      <td className="px-6 py-4">{orderDate}</td>
+      <td className="px-6 py-4 font-semibold">₹{price}</td>
       <td className="px-6 py-4 flex items-center gap-2">
-        {statusStyles[order.status].icon}
-        {statusStyles[order.status].label}
+        {statusStyles[order.status]?.icon}
+        {statusStyles[order.status]?.label || order.status}
       </td>
     </tr>
   );
@@ -79,8 +101,8 @@ export default function Page() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await api.get("/user/orders"); // Adjusted route if needed
-        setOrders(res.data.data || []);
+        const res = await api.get("/user/orders");
+        setOrders(res.data?.data || res.data || []);
       } catch (err: any) {
         if (err.response?.status === 401) {
           setError(

@@ -27,7 +27,7 @@ export function UserMenu({ user }: UserMenuProps) {
         />
       ) : (
         <CgProfile
-          size={24}
+          size={32}
           className="text-white font-bold p-2 rounded-md bg-white/20 cursor-pointer hover:bg-white/30 transition-colors"
         />
       )}

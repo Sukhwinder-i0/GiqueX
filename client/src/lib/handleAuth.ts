@@ -6,7 +6,7 @@ export const handleGoogleLogin = async () => {
     if (!baseUrl) {
       throw new Error("API base URL not configured");
     }
-    window.location.href = `${baseUrl}/auth/google`;
+    window.location.href = `${baseUrl}/api/v1/auth/google`;
   } catch (err) {
     console.error("Google login failed", err);
     throw err;
@@ -20,7 +20,7 @@ export const handleEmailLogin = async (email: string, password: string) => {
     if (!baseUrl) throw new Error("API base URL not configured");
     // console.log(baseUrl)
 
-    const res = await fetch(`${baseUrl}/auth/email/signin`, {
+    const res = await fetch(`${baseUrl}/api/v1/auth/email/signin`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password }),
@@ -82,7 +82,7 @@ export const handleEmailSignup = async (name: string, email: string, password: s
       throw new Error("Password must be at least 6 characters");
     }
 
-    const res = await fetch(`${baseUrl}/auth/email/signup`, {
+    const res = await fetch(`${baseUrl}/api/v1/auth/email/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ export const handleOtpVerification = async (email: string, otp: string) => {
       throw new Error("OTP is required");
     }
 
-    const res = await fetch(`${baseUrl}/auth/email/verify-otp`, {
+    const res = await fetch(`${baseUrl}/api/v1/auth/email/verify-otp`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

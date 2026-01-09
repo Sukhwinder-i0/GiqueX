@@ -56,8 +56,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     try {
       const res = await api.post(endpoint);
-      set({ user: res.data.user });
-      toast.success(`You are now a ${newRole}!`);
+      const userData = res.data?.data?.user || res.data?.user;
+      if (userData) {
+        set({ user: userData, isLoggedIn: true });
+        toast.success(`You are now a ${newRole}!`);
+      }
     } catch (err) {
       console.error('Failed to switch role', err);
       toast.error('Failed to switch role');
@@ -68,7 +71,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true });
     try {
       const res = await api.get('/user/me');
-      set({ user: res.data.user, isLoggedIn: true });
+      const userData = res.data?.data?.user || res.data?.user;
+      if (userData) {
+        set({ user: userData, isLoggedIn: true });
+      } else {
+        set({ user: null, isLoggedIn: false });
+      }
     } catch (err) {
       console.error('Fetch user failed', err);
       set({ user: null, isLoggedIn: false });

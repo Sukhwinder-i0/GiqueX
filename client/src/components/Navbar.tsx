@@ -20,7 +20,8 @@ export default function Navbar() {
 
   const handleSwitchRole = async () => {
     await switchRole();
-    if (user?.role === "buyer") router.push("/seller/dashboard");
+    if (user?.role === "buyer") router.push("/gigs");
+    if (user?.role === "seller") router.push("/seller/dashboard");
   };
 
   return (
