@@ -28,16 +28,24 @@ export interface UserDocument extends Document {
 
 const userSchema = new mongoose.Schema(
   {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: { 
       type: String, 
       unique: true, 
       required: true 
     },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
 
     googleId: String,
     avatar: String,
-    password: String,
 
     isVerified: { 
       type: Boolean, 
