@@ -32,7 +32,7 @@ const Input: React.FC<InputProps> = ({
   className = '',
 }) => {
   return (
-    <div className="w-full mb-4">
+    <div className="w-full">
       {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
       <input
         type={type}

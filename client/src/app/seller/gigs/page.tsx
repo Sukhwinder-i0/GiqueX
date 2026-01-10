@@ -19,7 +19,7 @@ interface Gig {
   createdAt: string;
 }
 
-export default function SellerDashboard() {
+export default function Gigs() {
   const router = useRouter();
   const { user, fetchUser, isLoggedIn } = useAuthStore();
   const [gigs, setGigs] = useState<Gig[]>([]);

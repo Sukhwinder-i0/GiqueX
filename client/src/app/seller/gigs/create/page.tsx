@@ -169,7 +169,7 @@ export default function CreateGigPage() {
               type="button"
               text="Cancel"
               variant="secondary"
-              onClick={() => router.push('/seller/dashboard')}
+              onClick={() => router.push('/seller/gigs')}
               className="flex-1 text-black"
             />
           </div>

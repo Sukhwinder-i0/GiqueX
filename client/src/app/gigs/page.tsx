@@ -71,7 +71,7 @@ export default function BrowseGigsPage() {
 
         {/* Search and Filter */}
         <div className="mb-8 space-y-4">
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center justify-center pb-6">
             <Input
               type="text"
               placeholder="Search gigs..."
@@ -81,8 +81,9 @@ export default function BrowseGigsPage() {
             />
             <Button
               text="Search"
-              variant="primary"
+              variant="secondary"
               onClick={handleSearch}
+              size="md"
             />
           </div>
 

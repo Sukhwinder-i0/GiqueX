@@ -18,6 +18,7 @@ function PageContent() {
     }
     useAuthStore.getState().fetchUser();
   }, [params]);
+  
 
   return (
     <div>

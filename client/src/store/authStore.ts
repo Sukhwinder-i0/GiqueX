@@ -29,7 +29,7 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  switchRole: () => Promise<void>; 
+  switchRole: () => Promise<User | null>; 
   isLoading: boolean;
   isLoggedIn: boolean;
   fetchUser: () => Promise<void>;
@@ -59,7 +59,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const userData = res.data?.data?.user || res.data?.user;
       if (userData) {
         set({ user: userData, isLoggedIn: true });
-        toast.success(`You are now a ${newRole}!`);
+        toast.success(`You are now a ${userData.role}!`);
+        return userData;
       }
     } catch (err) {
       console.error('Failed to switch role', err);

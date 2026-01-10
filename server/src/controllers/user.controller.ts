@@ -15,15 +15,12 @@ export const getUser = asyncHandler(async (req: AuthRequest, res: Response) => {
   });
 });
 
-export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Response) => {
+export const switchUserRole = asyncHandler(async (req: AuthRequest, res: Response) => {
   const user = await UserModel.findById(req.userId);
   if (!user) throw new ApiError(404, 'User not found');
 
-  // Set role to seller if not already
-  if (user.role !== 'seller') {
-    user.role = 'seller';
-  }
 
+  user.role = user.role === 'seller' ? 'buyer' : 'seller';
   await user.save();
 
   const token = generateJWT({
@@ -31,14 +28,11 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
     role: user.role,
   });
 
-  // since i am updating the userROle but jwt contains prevoius role
-  // console.log(user.role)
-
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({
@@ -50,9 +44,9 @@ export const switchToSeller = asyncHandler(async (req: AuthRequest, res: Respons
       isVerified: user.isVerified,
       role: user.role,
     },
-    token,
   });
 });
+
 
 export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
   res.clearCookie('token', {

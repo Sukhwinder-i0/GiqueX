@@ -24,11 +24,22 @@ export function MobileMenu({ isOpen, onClose, user, onSwitchRole }: MobileMenuPr
         >
           ×
         </button>
+
+        <Button
+            variant="primary"
+            text={user?.role == "buyer" ? "Start Selling" : "Switch to Buying"}
+            size="sm"
+            className="w-full"
+            onClick={async () => {
+              await onSwitchRole()
+              onClose()
+            }}
+          />
         
         {user?.role === "seller" && (
           <>
-            <Link href="/seller/dashboard" onClick={onClose} className="text-white font-medium">
-              Dashboard
+            <Link href="/seller/orders" onClick={onClose} className="text-white font-medium">
+              Orders
             </Link>
             <Link href="/seller/gigs" onClick={onClose} className="text-white font-medium">
               My Gigs
@@ -37,24 +48,17 @@ export function MobileMenu({ isOpen, onClose, user, onSwitchRole }: MobileMenuPr
         )}
 
         {user?.role === "buyer" && (
-          <Button
-            variant="primary"
-            text="Start Selling"
-            size="sm"
-            className="w-full"
-            onClick={async () => {
-              await onSwitchRole()
-              onClose()
-            }}
-          />
-        )}
-
-        <Link href="/" onClick={onClose} className="text-white font-medium">
+          <>
+         <Link href="/" onClick={onClose} className="text-white font-medium">
           Home
         </Link>
         <Link href="/orders" onClick={onClose} className="text-white font-medium">
           Orders
         </Link>
+          </>
+        )}
+
+       
         
         <div className="flex gap-4">
           <IoMdNotifications className="text-2xl text-gray-200 cursor-pointer" />

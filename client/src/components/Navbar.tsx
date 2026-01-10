@@ -19,9 +19,23 @@ export default function Navbar() {
   const { user, switchRole } = useAuthStore();
 
   const handleSwitchRole = async () => {
-    await switchRole();
-    if (user?.role === "buyer") router.push("/gigs");
-    if (user?.role === "seller") router.push("/seller/dashboard");
+    const updatedUser = await switchRole();
+  
+    if (!updatedUser) return;
+  
+    if (updatedUser.role === "buyer") {
+      router.push("/gigs");
+    } else {
+      router.push("/seller/gigs");
+    }
+  
+    console.log("New role:", updatedUser.role);
+  };
+  
+  const handleNavbarSearch = (query: string) => {
+    if (!query.trim()) return;
+
+    router.push(`/gigs?search=${encodeURIComponent(query)}`);
   };
 
   return (
@@ -36,6 +50,7 @@ export default function Navbar() {
             <SearchBar
               className="w-30 sm:w-60 md:w-90 px-2"
               placeholder="Search talent"
+              onSearch={handleNavbarSearch}
             />
           </div>
         )}

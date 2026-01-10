@@ -34,7 +34,11 @@ const  SearchBar = ({
         placeholder={placeholder}
         className="bg-transparent px-4 py-1 focus:outline-none text-white placeholder-white/50 w-[85%]"
       />
-      <FiSearch className="text-white/70 text-xl cursor-pointer" />
+      <FiSearch
+  onClick={handleSearch}
+  className="text-white/70 text-xl cursor-pointer"
+/>
+
     </div>
   )
 }
